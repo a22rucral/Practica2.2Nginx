@@ -1,0 +1,650 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mydomain.org/mysite/">
+      
+      
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.41">
+    
+    
+      
+        <title>Practica 2.2 Nginx Autenticación</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.0253249f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#practica-22-ngiinx-autenticacion" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="Practica 2.2 Nginx Autenticación" class="md-header__button md-logo" aria-label="Practica 2.2 Nginx Autenticación" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Practica 2.2 Nginx Autenticación
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Practica 2.2 Ngiinx. Autenticación.
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Practica 2.2 Nginx Autenticación" class="md-nav__button md-logo" aria-label="Practica 2.2 Nginx Autenticación" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Practica 2.2 Nginx Autenticación
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Practica 2.2 Ngiinx. Autenticación.
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Practica 2.2 Ngiinx. Autenticación.
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introducción.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracion-del-servidor-nginx-para-autenticacion-basica" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuración del servidor Nginx para autenticación básica.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#combinacion-de-la-autenticacion-basica-con-la-restriccion-de-acceso-por-ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      Combinación de la autenticación básica con la restricción de acceso por IP.
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Combinación de la autenticación básica con la restricción de acceso por IP.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tarea-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tarea 1.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tarea-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tarea 2.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cuestiones-finales" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cuestiones Finales.
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cuestiones Finales.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cuestion-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cuestion 1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuestion-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cuestion 2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuestion-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cuestion 3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuestion-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cuestion 4
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introducción.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracion-del-servidor-nginx-para-autenticacion-basica" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuración del servidor Nginx para autenticación básica.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#combinacion-de-la-autenticacion-basica-con-la-restriccion-de-acceso-por-ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      Combinación de la autenticación básica con la restricción de acceso por IP.
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Combinación de la autenticación básica con la restricción de acceso por IP.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tarea-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tarea 1.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tarea-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tarea 2.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cuestiones-finales" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cuestiones Finales.
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cuestiones Finales.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cuestion-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cuestion 1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuestion-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cuestion 2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuestion-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cuestion 3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuestion-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cuestion 4
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="practica-22-ngiinx-autenticacion">Practica 2.2 Ngiinx. Autenticación.</h1>
+<pre><code>Requisitos ; La práctica anterior debe estar funcionando correctamente. Con la redirección HTTPS funcionando.
+</code></pre>
+<h2 id="introduccion">Introducción.</h2>
+<p>Hablando de HTTP, la autenticación de acceso básica, esta diseñada para que un usuario tenga unas credenciales y pueda acceder a un navegador web, el programa le pedirá las credenciales cuando realice la solicitud de este.</p>
+<p>Para esto, necesitaremos las herramientas openssl para crear las contraseñas.</p>
+<p>Primero, comprobaremos que el paquete esté instalado. </p>
+<p><img alt="Imagen 1" src="assets/images/1comando_paqueteinstalado.png" /></p>
+<p>Una vez comprobado, crearemos un archivo oculto, al que llamaremos '.htpasswd' en el directorio de configuracion <strong>/etc/nginx</strong> donde guardar nuestros usuarios y contraseñas. </p>
+<p><img alt="Imagen 1" src="assets/images/2comando_creacionusuarios1.png" /></p>
+<p><img alt="Imagen 1" src="assets/images/3comando_creacionusuarios2.png" /></p>
+<p>Este proceso, se puede repetir, tantas veces como usuarios quieras crear. Ahora entraremos en el archivo indicado previamente para comprobar la existencia de los usuarios y que se hayan guardado correctamente. </p>
+<p><img alt="Imagen 1" src="assets/images/4comando_ficherousuarios.png" /></p>
+<h2 id="configuracion-del-servidor-nginx-para-autenticacion-basica">Configuración del servidor Nginx para autenticación básica.</h2>
+<p>Editaremos el archivo que se encuentra en <strong>/etc/nginx/sites-avaliable/tu_nombre</strong> para añadir la restricción de autenticación. </p>
+<p><img alt="Imagen 1" src="assets/images/5comando_accederficherosites.png" /></p>
+<p>En el bloque de <strong>location</strong>, protegeremos la raíz, esto se indica con la '<strong>/</strong> ' tras el location para indicar la ruta a la que quieres aplicar el bloque. Lo modificaremos de la siguiente manera: </p>
+<p><img alt="Imagen 1" src="assets/images/6comando_modificacionlocation.png" /></p>
+<p>Ahora reiniciaremos para aplicar la configuración que hemos modificado y se muestre nuestra política de acceso. </p>
+<p>Probaremos accediendo a nuestra página web y nos saldrá el siguiente mensaje : </p>
+<p><img alt="Imagen 1" src="assets/images/7comando_autenticacion1.png" /></p>
+<p>En el caso de que cancelemos la autenticación nos denegará el acceso a la página web, diciendo que es necesario autenticarse. </p>
+<p><img alt="Imagen 1" src="assets/images/8comando_autenticacioncancelada.png" /></p>
+<p>Como tarea, hemos iniciado sesión con un usuario válido y con otro inválido. Estos logs lo podremos comprobar en la siguiente imagen, para tener constancia de quien hace peticiones a la página web y cuales son exitosas y cuales no. </p>
+<p><img alt="Imagen 1" src="assets/images/9comando_tarea1acceslog.png" /></p>
+<p>Al final de la foto, podremos ver un código <strong>401</strong> que nos indicará error en la petición debido al fallo en la  autenticación. </p>
+<p>Esto lo haríamos en caso de querer aplicar la autenticación a toda la página web, ahora lo modificaremos para que afecte solo a un archivo en concreto. En mi caso a index2.html. Al cual accederemos mediante autenticación. El archivo se lo indicaremos mediante su ruta despues de la palabra location y previo a la apertura de llaves. </p>
+<p><img alt="Imagen 1" src="assets/images/10comando_modificacionlocation2.png" /></p>
+<h2 id="combinacion-de-la-autenticacion-basica-con-la-restriccion-de-acceso-por-ip">Combinación de la autenticación básica con la restricción de acceso por IP.</h2>
+<p>Para más seguridad y mas filtros, junto a la autenticación se puede implementar una restricción de IP, permitiendo o denegando el acceso de estas. Se puede hacer de forma independiente de la autenticación. </p>
+<h3 id="tarea-1">Tarea 1.</h3>
+<p>Configura nginx para que no deje acceder con la IP de la máquina anfitriona al directorio raíz a tu web. Modifica su server block o archivo de configuración y comprueba que niega el acceso. </p>
+<p>Cambiamos el bloque, denegando servicio a las IPs que se muestran en la captura, que en cada caso se personalizarán con las vuestras.</p>
+<p><img alt="Imagen 1" src="assets/images/11comando_denegacionip1.png" /></p>
+<p>Tras intentar acceder da error: </p>
+<p><img alt="Imagen 1" src="assets/images/12comando_accesodenegado.png" /></p>
+<h3 id="tarea-2">Tarea 2.</h3>
+<p>Configura Nginx para que desde tu máquina anfitriona se tenga que tener tanto una IP válida como un usuario válido, ambas cosas a la vez, y comprueba si puede acceder sin problemas. </p>
+<p>Cambiaremos el bloque del servidor, permitiendo acceso a la IP de nuestra máquina y pidiendo la autenticación de usuarios.</p>
+<p><img alt="Imagen 1" src="assets/images/15comando_denegarallow.png" /></p>
+<p>Tras iniciar sesión desde mi máquina : </p>
+<p><img alt="Imagen 1" src="assets/images/13comando_autenticacionprueba.png" /></p>
+<p>Nos da acceso a la página web, demostrando que tenemos tanto un usuario válido como una IP válida. </p>
+<p><img alt="Imagen 1" src="assets/images/14comando_accesoautenticacion.png" /></p>
+<h2 id="cuestiones-finales">Cuestiones Finales.</h2>
+<h3 id="cuestion-1">Cuestion 1</h3>
+<p>Supongamos que yo soy cliente con la IP 172.1.10.15 e intento acceder al directorio web_muy_guay de mi sitio web, equivocándome al poner el usuario y contraseña. ¿Podré acceder?¿Por qué?</p>
+<pre><code>    location /web_muy_guay {
+    #...
+    satisfy all;    
+    deny  172.1.10.6;
+    allow 172.1.10.15;
+    allow 172.1.3.14;
+    deny  all;
+    auth_basic &quot;Cuestión final 1&quot;;
+    auth_basic_user_file conf/htpasswd;
+}
+</code></pre>
+<p>No podrás acceder, ya que al tener puesto <strong>satisfy all</strong> tendrás que pasar tanto el filtro de IP válida como el de autenticación de usuario. Al fallar en este último te denegará el acceso. </p>
+<h3 id="cuestion-2">Cuestion 2</h3>
+<p>Supongamos que yo soy el cliente con la IP 172.1.10.15 e intento acceder al directorio web_muy_guay de mi sitio web, introduciendo correctamente usuari y contraseña. ¿Podré acceder?¿Por qué?</p>
+<pre><code>        location /web_muy_guay {
+    #...
+    satisfy all;    
+    deny  all;
+    deny  172.1.10.6;
+    allow 172.1.10.15;
+    allow 172.1.3.14;
+
+    auth_basic &quot;Cuestión final 2: The revenge&quot;;
+    auth_basic_user_file conf/htpasswd;
+        }
+</code></pre>
+<p>No podrás acceder, ya que al ser <strong>deny all</strong> lo primero que se evalua, te denegará el acceso, la solución sería ponerlo al final, y poner las instrucciones más específicas al principio. </p>
+<h3 id="cuestion-3">Cuestion 3</h3>
+<p>Supongamos que yo soy el cliente con la IP 172.1.10.15 e intento acceder al directorio web_muy_guay de mi sitio web, introduciendo correctamente usuario y contraseña. ¿Podré acceder?¿Por qué?</p>
+<pre><code>    location /web_muy_guay {
+    #...
+    satisfy any;    
+    deny  172.1.10.6;
+    deny 172.1.10.15;
+    allow 172.1.3.14;
+
+    auth_basic &quot;Cuestión final 3: The final combat&quot;;
+    auth_basic_user_file conf/htpasswd;
+}
+</code></pre>
+<p>En este caso podrás acceder, ya que la IP está permitida y has puesto correctamente las credenciales de usuario. </p>
+<h3 id="cuestion-4">Cuestion 4</h3>
+<p>A lo mejor no sabéis que tengo una web para documentar todas mis excursiones espaciales con Jeff, es esta: Jeff Bezos y yo</p>
+<p>Supongamos que quiero restringir el acceso al directorio de proyectos porque es muy secreto, eso quiere decir añadir autenticación básica a la URL:Proyectos</p>
+<p>Completa la configuración para conseguirlo:</p>
+<pre><code>    server {
+        listen 80;
+        listen [::]:80;
+        root /var/www/freewebsitetemplates.com/preview/space-science;
+        index index.html index.htm index.nginx-debian.html;
+        server_name freewebsitetemplates.com www.freewebsitetemplates.com;
+        location /projects.html{
+            auth_basic &quot;Autenticación Proyectos&quot;;
+            auth_basic_user_file conf/htpasswd;
+
+            try_files $uri $uri/ =404;
+        }
+    }
+</code></pre>
+<p>En primer lugar pondremos la ruta del archivo tras el location, para que solo se aplique en ese archivo de la página web, después pondremos el código necesario para pedir la autenticación. </p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
