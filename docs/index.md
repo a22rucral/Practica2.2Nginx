@@ -20,7 +20,6 @@ Este proceso, se puede repetir, tantas veces como usuarios quieras crear. Ahora 
 
 ![Imagen 1](assets/images/4comando_ficherousuarios.png)
 
--- falta imagen -- 
 
 ## Configuración del servidor Nginx para autenticación básica. 
 Editaremos el archivo que se encuentra en **/etc/nginx/sites-avaliable/tu_nombre** para añadir la restricción de autenticación. 
